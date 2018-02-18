@@ -1,0 +1,16 @@
+/*
+This small little program bounces a "ball" on four walls, without the use of if statements.
+I implemented and "improved" (just some visually fancy stuff to make it prettier) some other codes in this work.
+Made by Attila Fekete at the University of Debrecen in 2018
+*/
+
+public class Main {
+	public static void main(String[] args){
+		
+		int width = 64 , height = 32;   //the resolution of the box
+	    int x = 10, y = 10;   //current coordinates of the ball
+	    int x1 = x, y1 = y;
+	    
+	    System.out.print("asd");
+	}
+}
