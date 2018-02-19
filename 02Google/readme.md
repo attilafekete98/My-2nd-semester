@@ -1,4 +1,4 @@
-padawanom: Szabó Alexandra
+padawanjaim: Szabó Alexandra Kalmár Patrik
 
 main.xy
     Bit shifteléssel megadja hány biten tárolja a szóhosszt.
