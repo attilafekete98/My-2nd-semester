@@ -1,3 +1,5 @@
+padawanom: Szabó Alexandra
+
 main.xy
     Bit shifteléssel megadja hány biten tárolja a szóhosszt.
 
