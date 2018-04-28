@@ -1,1 +1,1 @@
-A "working" chat program. The client sends a message, then the server, then the client, then the server, and so on. Will be working with two clients. (I hope so...)
+This program can finally communicate between two clients. Shame the server only sends the messages when both clients already wrote it. 

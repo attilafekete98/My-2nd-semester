@@ -9,7 +9,7 @@
 #include <unistd.h> // for close
 #include <arpa/inet.h>
 
-#define BUFSIZE 1300
+#define BUFSIZE 1301
 #define PORT_NO 2001
 
 int main(int argc, char *argv[] ){
@@ -66,14 +66,14 @@ int main(int argc, char *argv[] ){
     message = send(network_socket, buffer, BUFSIZE, 0);
     if(message < 0) {
        fprintf(stderr, "Can't send message\n");
-       return 3;
+       exit(3);
     }
 
     //Recive message from the server
     recv(network_socket, &server_response, sizeof(server_response), 0);
 
     //print out the server response
-    printf("The server sent the following data:\n%s\n", server_response);
+    printf("The other client sent the following message:\n%s\n", server_response);
 
   }
 
