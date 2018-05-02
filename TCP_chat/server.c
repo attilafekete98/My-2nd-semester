@@ -1,12 +1,22 @@
+/*
+This is a program to manage a debate between two clients. The clients can send messages to each
+other. When both clients send the message "yes", the debate is closed.
+This server program sends messages between two clients. When both clients sent a message
+to the server, the server forwards it to the other client.
+
+Usage: ./server
+
+Made my Attila Fekete in 2018.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-
-//I'm not sure if I need these at all
-#include <fcntl.h> // for open
-#include <unistd.h> // for close
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
 
 #define BUFSIZE 1301
 #define PORT_NO 2001
@@ -18,7 +28,7 @@ int main(int argc, char *argv[] ){
   int client_socket2;
   char buffer[BUFSIZE];
   char server_message[BUFSIZE] = "Welcome to the server! You're Client1.";
-  char server_message2[BUFSIZE] = "Welcome to the server! You're Client2. Wait for Client1's message!";
+  char server_message2[BUFSIZE] = "Welcome to the server! You're Client2.";
   char client_response[BUFSIZE];
   char client_response2[BUFSIZE];
   int message;
@@ -73,11 +83,38 @@ int main(int argc, char *argv[] ){
   //Chatting starts here
   while(1){
 
+    //Chek if both messages is "yes", if so then close the debate
+    if((strstr(client_response, "yes") != NULL) && (strstr(client_response2, "yes") != NULL)){
+      /*strstr() Checks where it's second argument can be found in it's first argument.
+        when it can't be found it returns NULL. So when both responses return NULL, it means
+        that both clients are happy with the debate*/
+      printf("Debate closed\n");
+      //Send a message to Client2
+      message = send(client_socket2, "Debate closed\n", BUFSIZE, 0);
+      if(message < 0) {
+         fprintf(stderr, "Can't send message\n");
+         exit(5);
+      }
+      //Send a message to Client1
+      message = send(client_socket, "Debate closed\n", BUFSIZE, 0);
+      if(message < 0) {
+         fprintf(stderr, "Can't send message\n");
+         exit(5);
+      }
+      break;
+    }
+
     //Recive greating message from Client1
     recv(client_socket, &client_response, sizeof(client_response), 0);
 
     //print out the client response
     printf("Client1 sent the following message:\n%s\n", client_response);
+
+    //Recive greating message from Client2
+    recv(client_socket2, &client_response2, sizeof(client_response2), 0);
+
+    //print out the client response
+    printf("Client2 sent the following message:\n%s\n", client_response2);
 
     //Send a message to Client2
     message = send(client_socket2, client_response, BUFSIZE, 0);
@@ -85,12 +122,6 @@ int main(int argc, char *argv[] ){
        fprintf(stderr, "Can't send message\n");
        exit(5);
     }
-
-    //Recive greating message from Client2
-    recv(client_socket2, &client_response2, sizeof(client_response2), 0);
-
-    //print out the client response
-    printf("Client2 sent the following message:\n%s\n", client_response2);
 
     //Send a message to Client1
     message = send(client_socket, client_response2, BUFSIZE, 0);

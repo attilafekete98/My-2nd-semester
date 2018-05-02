@@ -1,12 +1,20 @@
+/*
+This is a program to manage a debate between two clients. The clients can send messages to each
+other. When both clients send the message "yes", the debate is closed.
+This client program sends and revives responses from the server.
+
+Usage: ./client IP
+
+Made my Attila Fekete in 2018.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-
-//I'm not sure if I need these at all
-#include <fcntl.h> // for open
-#include <unistd.h> // for close
+#include <fcntl.h>
+#include <unistd.h>
 #include <arpa/inet.h>
 
 #define BUFSIZE 1301
