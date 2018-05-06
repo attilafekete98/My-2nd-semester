@@ -69,7 +69,7 @@ int main(int argc, char *argv[] ){
   //if this is Client2 it will skip the writing part of the endless loop in the first cycle
   //so it will just print Client1's message
   if (strstr(server_response, "Welcome to the server! You're Client2.") != NULL){
-    goto CSECS;
+    goto CSECS;//tranzisztorlakatos vagyok!
   }
 
   //Chatting starts here
