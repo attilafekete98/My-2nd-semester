@@ -23,6 +23,8 @@ Made my Attila Fekete in 2018.
 
 int main(int argc, char *argv[] ){
 
+  printf("\e[1;1H\e[2J"); //clears the screen on linux
+
   int server_socket;
   int client_socket;
   int client_socket2;
@@ -68,6 +70,11 @@ int main(int argc, char *argv[] ){
      fprintf(stderr, "Can't accept socket\n");
      exit(4);
   }
+
+  //send the greating message
+  send(client_socket, server_message, sizeof(server_message), 0);
+  printf("Greating sent to client1\n"); //UI
+
   client_socket2 = accept(server_socket, NULL, NULL);
   if (server_socket < 0) {
      fprintf(stderr, "Can't accept socket\n");
@@ -75,10 +82,8 @@ int main(int argc, char *argv[] ){
   }
 
   //send the greating message
-  send(client_socket, server_message, sizeof(server_message), 0);
-  printf("Message sent to client1\n"); //UI
   send(client_socket2, server_message2, sizeof(server_message2), 0);
-  printf("Message sent to client2\n"); //UI
+  printf("Greating sent to Client2\n"); //UI
 
   //Chatting starts here
   while(1){
@@ -110,21 +115,24 @@ int main(int argc, char *argv[] ){
     //print out the client response
     printf("Client1 sent the following message:\n%s\n", client_response);
 
+    //Send a message to Client2
+    message = send(client_socket2, strcat(client_response, "222"), BUFSIZE, 0);
+    //strcat() concatenates the two char arrays. This is the "translation"
+    if(message < 0) {
+       fprintf(stderr, "Can't send message\n");
+       exit(5);
+    }
+
     //Recive greating message from Client2
     recv(client_socket2, &client_response2, sizeof(client_response2), 0);
 
     //print out the client response
     printf("Client2 sent the following message:\n%s\n", client_response2);
 
-    //Send a message to Client2
-    message = send(client_socket2, client_response, BUFSIZE, 0);
-    if(message < 0) {
-       fprintf(stderr, "Can't send message\n");
-       exit(5);
-    }
 
     //Send a message to Client1
-    message = send(client_socket, client_response2, BUFSIZE, 0);
+    message = send(client_socket, strcat(client_response2, "111"), BUFSIZE, 0);
+    //strcat() concatenates the two char arrays. This is the "translation"
     if(message < 0) {
        fprintf(stderr, "Can't send message\n");
        exit(5);
@@ -132,9 +140,10 @@ int main(int argc, char *argv[] ){
 
   }
 
-  //close socket
+  //close sockets
   close(server_socket);
   close(client_socket);
+  close(client_socket2);
 
   return 0;
 }
