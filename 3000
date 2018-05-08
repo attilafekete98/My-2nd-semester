@@ -1,0 +1,59 @@
+//tutor: Kalmár Patrik
+
+#include <iostream>
+#include <ctime>
+#include <string>
+
+using namespace std;
+
+int szev(int ev, int nap)
+{
+  while(ev<3000)
+  {
+    ev++;
+    if(((ev % 4) == 0) && ((ev % 100) == 0) || (ev % 400) == 0 ){
+        nap = (nap + 3 ) % 7;
+    } else {
+        nap = (nap + 2) % 7;
+    }
+  }
+  return nap;
+}
+
+
+int main()
+{
+  int ev = 1998, honap = 7, nap = 4; //születési dátumod
+
+  std::tm time_in = {0,0,0, nap, honap -1, ev -1900};
+  std::time_t time_temp = std::mktime(&time_in);
+
+  const std::tm * time_out = std::localtime(&time_temp);
+  string a;
+  switch (szev(ev,static_cast<int>(time_out->tm_wday)))
+  {
+    case 0: a="Vasarnap";
+    break;
+
+    case 6: a="Szombat";
+    break;
+
+    case 5: a="Pentek";
+    break;
+
+    case 4: a="Csutortok";
+    break;
+
+    case 3: a="Szerda";
+    break;
+
+    case 2: a="Kedd";
+    break;
+
+    case 1: a="Hetfo";
+    break;
+  }
+  cout<<"3000-ben: "<<a<<endl;
+
+  return 0;
+}
